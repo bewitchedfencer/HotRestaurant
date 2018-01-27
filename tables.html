@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hot Restaurant - Tables</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h2>Hot Restaurants in your area are ready and waiting for you!</h2>
+            <hr>
+            <a href="">
+                <button type="button" class="btn btn-danger">Make a Reservation</button>
+            </a>
+            <a href="">
+                <button type="button" class="btn btn-default">Home</button>
+            </a>
+        </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>Current Reservations</h3>
+                </div>
+                <div class="panel-body" id="tables">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>Waiting List</h3>
+                </div>
+                <div class="panel-body" id="waiting">
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            //connect to server
+            var currentRes = [];
+            var waiting = [];
+            var url = "http://localhost:3000/api"
+            $.get(url + '/tables', data => {
+                console.log(`Already have a reservation: ${data}`);
+                for (var i = 0; i < data.length; i++) {
+                    $("#tables").append(`<div class="well">${i+1}|${data[i].name}</div>`)
+                };
+            });
+            $.get(url + '/waiting', data =>{
+                console.log(`Waiting for a table: ${data}`);
+                for (var i = 0; i < data.length; i++) {
+                    $("#waiting").append(`<div class="well">${i+1}|${data[i].name}</div>`)
+                };
+            })
+        </script>
+</body>
+</html>

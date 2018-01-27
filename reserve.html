@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hot Restaurant</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>
+                <span class="glyphicon glyphicon-fire"></span> Hot Restaurant</h1>
+            <hr>
+            <h2>Make your reservation</h2>
+            <br>
+            <a href="/tables">
+                <button type="button" class="btn btn-primary btn-lg" id="tableBtn">
+                    <span class="glyphicon glyphicon-list-alt"></span> View Tables</button>
+            </a>
+            <a href="/">
+                <button type="button" class="btn btn-default btn-lg">
+                    <span class="glyphicon glyphicon-home"></span>
+            </a>
+
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Table Reservation
+                </h3>
+            </div>
+            <div class="panel-body">
+
+                <form id="newResForm">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Name</label>
+                        <input type="name" class="form-control" id="formName" default="" aria-describedby="name">
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Phone Number</label>
+                        <input type="phone" class="form-control" id="formPhone" default="" aria-describedby="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="email" class="form-control" id="formEmail" default="" aria-describedby="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Unique ID</label>
+                        <input type="uniqueId" class="form-control" id="formUniqueId" default="" aria-describedby="unique ID">
+                    </div>
+                    <button type="submit" class="btn btn-primary submitBtn">Submit</button>
+                </form>
+            </div>
+        </div>
+
+
+        <p>
+            <a href="api/tables">API Table Link</a> |
+            <a href="api/waiting">API Wait List</a>
+        </p>
+
+        <script type="text/javascript">
+            //When Submit is clicked: POST request capturing user inputs, and send to 
+            $(".submitBtn").on("click", function (event) {
+                console.log("clicked!")
+                event.preventDefault();
+                var newRes = {
+                    name: $("#formName").val().trim(),
+                    phone: $("#formPhone").val().trim(),
+                    email: $("#formEmail").val().trim(),
+                    uniqueId: $("#formUniqueId").val().trim(),
+                    reserved:true
+                };
+                $.post("/api/new", newRes)
+                    .then(function (data) {
+                        if (data.reserved){
+                            alert("Yay! You're officially booked"); //Need to differentiate between reserved and waitlist message
+                        }else{
+                            alert("Our tables are full, but you're on the waitlist!")
+                        }
+                        $("#newResForm").trigger("reset");
+                       
+                    });
+            });
+        </script>
+</body>
+
+</html>
